@@ -4,6 +4,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.alibaba.fastjson.JSONPath;
 import com.string.TestJsonString;
 import jdk.dynalink.beans.StaticClass;
+import org.reactivestreams.Publisher;
 import reactor.core.Exceptions;
 import reactor.core.publisher.Flux;
 import reactor.core.publisher.Mono;
@@ -318,8 +319,30 @@ public class Flux_test {
         System.out.println("TT");
 
 
+        System.out.println("---------------20200720----------------");
+        List<Integer> list = new ArrayList<>(3);
+        List<List<Integer>> lists = new ArrayList<>(3);
 
+        Flux.range(0,3)
+            .map(list::add)
+            .subscribe();
 
+        Flux.range(0,3)
+            .map(item -> lists.add(list))
+            .subscribe();
+
+        Flux.from((Publisher<List<Integer>>) s -> lists.forEach(s::onNext))
+            .log()
+            .flatMap(sublist -> {
+                System.out.println("sublist");
+                return Flux.from((Publisher<Integer>) s -> sublist.forEach(s::onNext)).log();
+            })
+            .subscribe(System.out::println);
+
+        Flux.range(0,3)
+            .log()
+            .flatMap(i -> (Publisher<Integer>) s -> s.onNext(i))
+            .subscribe(System.out::println);
     }
 
     private static List<String> findByPage(int page, int size){

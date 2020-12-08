@@ -1,4 +1,17 @@
-//package com.rxjava.reactor_test;
+package com.rxjava.reactor_test;
+
+import com.rxjava.myPublisher.MyListPublisher;
+import com.rxjava.myPublisher.MyPublisher;
+import org.reactivestreams.Publisher;
+import reactor.core.Disposable;
+import reactor.core.publisher.Flux;
+import reactor.core.scheduler.Scheduler;
+import reactor.core.scheduler.Schedulers;
+
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.List;
+
 //
 //import org.reactivestreams.Processor;
 //import org.reactivestreams.Subscription;
@@ -17,8 +30,8 @@
 ///**
 // * need reactor 2.X
 // */
-//public class Test1 {
-//    public static void main(String[] args) {
+public class Test1 {
+    public static void main(String[] args) {
 //        Processor<String, String> processor = RingBufferProcessor.create();
 //
 //        Stream<String> str1 = Streams.just("Hello ");
@@ -97,6 +110,108 @@
 //
 //
 //
-//    }
-//
-//}
+        System.out.println("---------------20200720----------------");
+        List<Integer> list = new ArrayList<>(3);
+        List<List<Integer>> lists = new ArrayList<>(3);
+
+        Flux.range(0,4)
+            .map(list::add)
+            .subscribe();
+
+        Flux.range(0,3)
+            .map(item -> lists.add(list))
+            .subscribe();
+
+
+
+        //MyListSubscriber subscriberA = new MyListSubscriber();
+        MyListPublisher publisher = new MyListPublisher();
+        SampleSubscriber sampleSubscriber = new SampleSubscriber<List<Integer>>();
+        Scheduler myThread = Schedulers.newParallel("myThread", 4);
+       Flux
+            .from(publisher)
+            //.from((Publisher<List<Integer>>)s -> {
+            //    System.out.println( "1st " + Thread.currentThread().getName());
+            //    for (List<Integer> listItem:lists){
+            //        //System.out.println(listItem);
+            //        s.onNext(listItem);
+            //    }
+            //    //lists.forEach(s::onNext);
+            //})
+            //.publishOn(myThread)
+            .log()
+            //.flatMap(sublist -> {
+            //    System.out.println( "2st " + Thread.currentThread().getName());
+            //    return Flux.from((Publisher<Integer>) s -> {
+            //        System.out.println( "3st " + Thread.currentThread().getName());
+            //        sublist.forEach(s::onNext);
+            //    }).log();
+            //})
+            .log()
+            .doOnNext(item -> {
+                System.out.println("4st " + Thread.currentThread().getName());
+            })
+            .doOnError(item -> {
+                System.out.println("error ");
+                item.printStackTrace();
+            })
+            //.count()
+            .collectList()
+            .doOnSuccess(item -> {
+                System.out.println("doOnSuccess");
+                System.out.println(item);
+            })
+            //.delaySubscription(Duration.ofMillis(100))
+            //.subscribe(sampleSubscriber);
+            .subscribe(System.out::println, item -> item.printStackTrace(), ()->{ })
+            .dispose();
+
+        //.subscribe(subscriberA);
+
+        try {
+            Thread.sleep(1000);
+        }catch (Exception e){}
+
+        //
+        //Flux.range(0,3)
+        //    .log()
+        //    .flatMap(i -> (Publisher<Integer>) s -> s.onNext(i))
+        //    .subscribe(System.out::println);
+
+
+        System.out.println("-------------------20200720-2---------------");
+        //Flux.fromIterable(lists)
+        //    .log()
+        //    //.doOnNext(item -> {
+        //    //    System.out.println(Thread.currentThread().getName());
+        //    //    System.out.println(item);
+        //    //})
+        //    //.flatMap(sublist -> {
+        //    //            System.out.println(Thread.currentThread().getName());
+        //    //            System.out.println("sublist");
+        //    //            return Flux.from((Publisher<Integer>) s -> {
+        //    //                sublist.forEach(s::onNext);
+        //    //            }).log();
+        //    //        })
+        //    .flatMap(sublist -> {
+        //        System.out.println(Thread.currentThread().getName());
+        //        System.out.println("sublist");
+        //
+        //        return Flux.fromIterable(sublist).log();
+        //    })
+        //    .log()
+        //    .doOnNext(item -> {
+        //        System.out.println(Thread.currentThread().getName());
+        //        System.out.println(item);
+        //    })
+        //    .collectList()
+        //    .doOnSuccess(item -> {
+        //        System.out.println("doOnSuccess");
+        //        System.out.println(item);
+        //    })
+        //    //.delaySubscription(Duration.ofMillis(10))
+        //    .subscribe(System.out::println);
+
+    }
+
+}

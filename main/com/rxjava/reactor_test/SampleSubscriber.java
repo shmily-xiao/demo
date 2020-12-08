@@ -8,7 +8,7 @@ public class SampleSubscriber<T> extends BaseSubscriber<T> {
     @Override
     public void hookOnSubscribe(Subscription subscription){
         System.out.println("hookOnSubscribe is running");
-        super.request(2);
+        super.request(1);
         System.out.println("hookOnSubscribe is end");
     }
 
@@ -17,7 +17,7 @@ public class SampleSubscriber<T> extends BaseSubscriber<T> {
 
         System.out.println("hookOnNext start");
         System.out.println(value);
-        super.request(2);
+        super.request(1);
         System.out.println("hookOnNext is end");
         //super.cancel();
     }
@@ -29,6 +29,7 @@ public class SampleSubscriber<T> extends BaseSubscriber<T> {
 
     @Override
     public void hookFinally(SignalType type) {
+        System.out.println( "SignalType: " + type);
         System.out.println("hookFinally");
     }
 
