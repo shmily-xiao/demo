@@ -10,7 +10,7 @@
     <properties>
         <endorsed.dir>${project.build.directory}/endorsed</endorsed.dir>
         <project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
-        <org.springframework>4.1.1.RELEASE</org.springframework>
+        <org.springframework>4.2.7.RELEASE</org.springframework>
         <rocketmq.version>4.1.0-incubating</rocketmq.version>
     </properties>
     <build>
