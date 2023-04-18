@@ -2,13 +2,11 @@ package com.echo;
 
 //import javafx.scene.control.RadioMenuItem;
 
-import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.InputStreamReader;
 import java.io.PrintWriter;
 import java.net.Socket;
 import java.util.Random;
-import java.util.Scanner;
 
 /**
  * Created by simpletour_Jenkin on 2016/11/3.
@@ -73,12 +71,12 @@ public class EchoClient {
                 if ("true".equals(serverArguments[IS_SUCCESS])){
                     PrintWriter pw = new PrintWriter(client.getOutputStream());
 
-                    String clientMsg = "这是握手后的第一句话,然后拜拜！";
+                    String clientMsg = "这是握手后的第一句话,然后我们继续呀！";
+                    // 只要为false就能一直和服务端交流
                     String msg = serverArguments[TIMES] + "," + serverArguments[IS_SUCCESS] + ","
-                            +serverArguments[CLIENT_RANDOM]+"," +serverArguments[SERVER_RANDOM]+",true,"+clientMsg;
+                            +serverArguments[CLIENT_RANDOM]+"," +serverArguments[SERVER_RANDOM]+",false,"+clientMsg;
                     pw.println(msg);
                     pw.flush();
-                    break;
                 }else {
                     int times = Integer.parseInt(serverArguments[TIMES])+1;
                     int tempClientRandom = Integer.parseInt(serverArguments[CLIENT_RANDOM]);
@@ -92,8 +90,8 @@ public class EchoClient {
                     pw.println(msg);
                     pw.flush();
                 }
-
             }
+            Thread.sleep(30_000);
         }
         client.close();
 

@@ -85,6 +85,9 @@ public class EchoServer {
                         System.out.println(serverMsg);
                         pw.println(serverMsg);
                         pw.flush();
+                    }else {
+                        pw.println("");
+                        pw.flush();
                     }
                 }
 
