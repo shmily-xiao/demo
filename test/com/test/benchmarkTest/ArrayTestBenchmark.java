@@ -1,5 +1,6 @@
 package com.test.benchmarkTest;
 
+import com.alibaba.fastjson.JSON;
 import org.openjdk.jmh.annotations.*;
 
 /**
@@ -13,7 +14,7 @@ import org.openjdk.jmh.annotations.*;
 // 预热3次
 @Warmup(iterations = 3, time = 1)
 // 循环 10 次
-@Measurement(iterations = 10, time = 1)
+@Measurement(iterations = 3, time = 1)
 public class ArrayTestBenchmark {
 
     private final int N = 1100;
@@ -29,10 +30,13 @@ public class ArrayTestBenchmark {
                 arrays_B[i][j] = i + j;
             }
         }
+
+//        System.out.println(JSON.toJSONString(arrays_A));
+//        System.out.println(JSON.toJSONString(arrays_B));
     }
 
 
-    @Benchmark
+//    @Benchmark
     public void ijk() {
         final int[][] arrays_C = new int[N][N];
         for (int i = 0; i < N; i++) {
@@ -47,7 +51,7 @@ public class ArrayTestBenchmark {
         assert arrays_C.length > 0;
     }
 
-    @Benchmark
+//    @Benchmark
     public void jik() {
         final int[][] arrays_C = new int[N][N];
         for (int j = 0; j < N; j++) {
@@ -62,7 +66,7 @@ public class ArrayTestBenchmark {
         assert arrays_C.length > 0;
     }
 
-    @Benchmark
+//    @Benchmark
     public void jki() {
         final int[][] arrays_C = new int[N][N];
         for (int j = 0; j < N; j++) {
@@ -76,7 +80,7 @@ public class ArrayTestBenchmark {
         assert arrays_C.length > 0;
     }
 
-    @Benchmark
+//    @Benchmark
     public void kji() {
         final int[][] arrays_C = new int[N][N];
         for (int k = 0; k < N; k++) {
@@ -101,6 +105,22 @@ public class ArrayTestBenchmark {
                 }
             }
         }
+//        System.out.println(JSON.toJSONString(arrays_C));
+        assert arrays_C.length > 0;
+    }
+
+    @Benchmark
+    public void kij_my() {
+        final int[][] arrays_C = new int[N][N];
+        for (int k = 0; k < N; k++) {
+            for (int i = 0; i < N; i++) {
+                int r_A = arrays_A[k][i];
+                for (int j = 0; j < N; j++) {
+                    arrays_C[k][j] += r_A * arrays_B[i][j];
+                }
+            }
+        }
+//        System.out.println(JSON.toJSONString(arrays_C));
         assert arrays_C.length > 0;
     }
 
@@ -115,6 +135,16 @@ public class ArrayTestBenchmark {
                 }
             }
         }
+//        System.out.println(JSON.toJSONString(arrays_C));
         assert arrays_C.length > 0;
     }
+
+//    public static void main(String[] args) {
+//        ArrayTestBenchmark arrayTestBenchmark = new ArrayTestBenchmark();
+//        arrayTestBenchmark.setUp();
+//
+//        arrayTestBenchmark.kij();
+//        arrayTestBenchmark.kij_my();
+//        arrayTestBenchmark.ikj();
+//    }
 }

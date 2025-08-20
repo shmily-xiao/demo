@@ -94,48 +94,5 @@ public class EchoClient {
             Thread.sleep(30_000);
         }
         client.close();
-
-//        //-------------------------- 第一次握手 ---------------------------//
-//        // 输入要发送的内容
-//        Random random = new Random();
-//        int clientRand = random.nextInt(1000);
-//
-//        String msg = "第一次握手："+client.getInetAddress().toString()+","+clientRand;
-//
-////        Scanner scanner = new Scanner(System.in);
-////        System.out.println("请输入内容：");
-////        String msg = scanner.nextLine();
-////        scanner.close();
-//
-//        // 利用socket在这个通道里面发送内容
-//        PrintWriter pw = new PrintWriter(client.getOutputStream());
-//        pw.println(msg);
-//        // 必须要flush才会发出去
-//        pw.flush();
-//        //-------------------------- 第一次握手 ---------------------------//
-//
-//
-//        //-------------------------- 第二次握手 ---------------------------//
-//        // 利用socket接收这个通道里面的内容
-//        BufferedReader bufferedReader = new BufferedReader(new InputStreamReader(client.getInputStream()));
-//        String serverMsg = bufferedReader.readLine();
-//        System.out.println(serverMsg);
-//        String[] server = serverMsg.split(",");
-//        int validClientRand = Integer.parseInt(server[server.length-2]); // 约定好倒数第二个是客户端的随机数
-//        int serverRand = Integer.parseInt(server[server.length-1]); // 约定好最后一个是服务端的随机数
-//        if (validClientRand != clientRand+1){
-//            System.out.println("第二次握手失败，client随机数校验失败");
-//            client.close();
-//        }
-//        msg = "第二次握手：" +client.getInetAddress().toString()+"," +(serverRand+1);
-//        pw.println(msg);
-//        pw.flush();
-//        //-------------------------- 第二次握手 ---------------------------//
-//
-//        System.out.println(bufferedReader.readLine());
-
-
-        // 关闭连接
-//        client.close();
     }
 }
